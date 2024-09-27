@@ -81,11 +81,16 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
+# Create include/${PACKAGE_NAME} link in the build directory for generated headers.
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/include)
 if (IsUnixPlatform)
-    # Create include/${PACKAGE_NAME} link in the build directory for generated headers.
-    file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/include)
     file(CREATE_LINK ../lib ${PROJECT_BINARY_DIR}/include/${PACKAGE_NAME} SYMBOLIC)
+else()
+    file(TO_NATIVE_PATH D:/GITHUB/openmoonray/source/openmoonray/moonray/scene_rdl2/lib _dstDir)
+    file(TO_NATIVE_PATH ${PROJECT_BINARY_DIR}/include/${PACKAGE_NAME} _srcDir)
+    execute_process(COMMAND cmd.exe /c mklink /D "${_srcDir}" "${_dstDir}") 
 endif()
+
 
 include(${PROJECT_NAME}CompileDefinitions)
 include(${PROJECT_NAME}CompileFeatures)
